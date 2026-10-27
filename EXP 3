@@ -1,0 +1,41 @@
+import numpy as np 
+import matplotlib.pyplot as plt 
+from matplotlib.patches import RegularPolygon 
+# Hexagon positions 
+rows = 4 
+cols = 4 
+radius = 1 
+# Frequency groups 
+freq = ['A','B','C','D','E','F','G'] 
+plt.figure(figsize=(8,8)) 
+ax = plt.gca() 
+for row in range(rows): 
+    for col in range(cols): 
+        x = col * 1.5 * radius 
+        y = row * np.sqrt(3) * radius 
+ 
+        if col % 2 == 1: 
+            y += np.sqrt(3)/2 
+ 
+        group = freq[(row*cols + col) % 7] 
+ 
+        hexagon = RegularPolygon( 
+            (x, y), 
+            numVertices=6, 
+            radius=radius, 
+            orientation=np.radians(30), 
+            edgecolor='black', 
+            facecolor='lightblue' 
+        ) 
+ 
+        ax.add_patch(hexagon) 
+        plt.text(x, y, group, 
+                 ha='center', 
+                 va='center', 
+                 fontsize=14, 
+                 fontweight='bold') 
+ 
+plt.axis('equal') 
+plt.axis('off') 
+plt.title("Frequency Reuse in Cellular System (Cluster Size = 7)") 
+plt.show()
