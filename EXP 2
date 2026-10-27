@@ -1,0 +1,69 @@
+     EXP 2 
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Number of bits
+N = 100
+
+# Generate random binary data
+bits = np.random.randint(0, 2, N)
+
+# BPSK Modulation: 0 -> -1, 1 -> +1
+tx_signal = 2 * bits - 1
+
+# AWGN Channel
+SNR_dB = 5
+SNR = 10 ** (SNR_dB / 10)
+
+# Calculate noise power
+noise_power = 1 / (2 * SNR)
+
+# Generate Gaussian noise
+noise = np.sqrt(noise_power) * np.random.randn(N)
+
+# Transmit signal through the noisy channel
+rx_signal = tx_signal + noise
+
+# Receiver: Detect received bits
+received_bits = (rx_signal > 0).astype(int)
+
+# Calculate Bit Error Rate (BER)
+BER = np.sum(bits != received_bits) / N
+
+# Display results
+print("Original Bits:")
+print(bits)
+
+print("\nReceived Bits:")
+print(received_bits)
+
+print("\nBit Error Rate =", BER)
+
+# Plot the results
+plt.figure(figsize=(10, 6))
+
+plt.subplot(3, 1, 1)
+plt.stem(bits)
+plt.title("Original Binary Data")
+plt.xlabel("Bit Index")
+plt.ylabel("Bit Value")
+plt.grid(True)
+
+plt.subplot(3, 1, 2)
+plt.plot(tx_signal, 'bo')
+plt.title("BPSK Transmitted Signal")
+plt.xlabel("Bit Index")
+plt.ylabel("Amplitude")
+plt.grid(True)
+
+plt.subplot(3, 1, 3)
+plt.plot(rx_signal, 'r.')
+plt.axhline(y=0, color='black')
+plt.title("Received Signal After AWGN")
+plt.xlabel("Bit Index")
+plt.ylabel("Amplitude")
+plt.grid(True)
+
+plt.tight_layout()
+plt.show()
